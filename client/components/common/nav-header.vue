@@ -27,7 +27,7 @@
           //-     v-app-bar-nav-icon.btn-animate-app(v-on='on', :class='$vuetify.rtl ? `mx-0` : ``')
           //-       v-icon mdi-menu
           //-   v-list(nav, :light='!$vuetify.theme.dark', :dark='$vuetify.theme.dark', :class='$vuetify.theme.dark ? `grey darken-4` : ``')
-          //-     v-list-item.pl-4(href='/')
+          //-     v-list-item.pl-4(href='/docs/')
           //-       v-list-item-avatar(size='24'): v-icon(color='blue') mdi-home
           //-       v-list-item-title.body-2 {{$t('common:header.home')}}
           //-     v-list-item.pl-4(@click='')
@@ -35,7 +35,7 @@
           //-       v-list-item-content
           //-         v-list-item-title.body-2.grey--text.text--ligten-2 {{$t('common:header.siteMap')}}
           //-         v-list-item-subtitle.overline.grey--text.text--lighten-2 Coming soon
-          //-     v-list-item.pl-4(href='/t')
+          //-     v-list-item.pl-4(href='/docs/t')
           //-       v-list-item-avatar(size='24'): v-icon(color='teal') mdi-tag-multiple
           //-       v-list-item-title.body-2 {{$t('common:header.browseTags')}}
           //-     v-list-item.pl-4(@click='assets')
@@ -72,7 +72,7 @@
               )
             v-tooltip(bottom)
               template(v-slot:activator='{ on }')
-                v-btn.ml-2.mr-0(icon, v-on='on', href='/t', :aria-label='$t(`common:header.browseTags`)')
+                v-btn.ml-2.mr-0(icon, v-on='on', href='/docs/t', :aria-label='$t(`common:header.browseTags`)')
                   v-icon(color='grey') mdi-tag-multiple
               span {{$t('common:header.browseTags')}}
       v-flex(xs7, md4)
@@ -180,10 +180,10 @@
           template(v-if='isAuthenticated && isAdmin')
             v-tooltip(bottom, v-if='mode !== `admin`')
               template(v-slot:activator='{ on }')
-                v-btn(icon, tile, height='64', v-on='on', href='/a', :aria-label='$t(`common:header.admin`)')
+                v-btn(icon, tile, height='64', v-on='on', href='/docs/a', :aria-label='$t(`common:header.admin`)')
                   v-icon(color='grey') mdi-cog
               span {{$t('common:header.admin')}}
-            v-btn(v-else, text, tile, height='64', href='/', :aria-label='$t(`common:actions.exit`)')
+            v-btn(v-else, text, tile, height='64', href='/docs/', :aria-label='$t(`common:actions.exit`)')
               v-icon(left, color='grey') mdi-exit-to-app
               span {{$t('common:actions.exit')}}
             v-divider(vertical)
@@ -217,12 +217,12 @@
                 v-list-item-content
                   v-list-item-title {{name}}
                   v-list-item-subtitle {{email}}
-              //- v-list-item(href='/w', disabled)
+              //- v-list-item(href='/docs/w', disabled)
               //-   v-list-item-action: v-icon(color='blue') mdi-view-compact-outline
               //-   v-list-item-content
               //-     v-list-item-title {{$t('common:header.myWiki')}}
               //-     v-list-item-subtitle.overline Coming soon
-              v-list-item(href='/p')
+              v-list-item(href='/docs/p')
                 v-list-item-action: v-icon(color='blue-grey') mdi-face-profile
                 v-list-item-content
                   v-list-item-title(:class='$vuetify.theme.dark ? `blue-grey--text text--lighten-3` : `blue-grey--text`') {{$t('common:header.profile')}}
@@ -232,7 +232,7 @@
 
           v-tooltip(v-else, left)
             template(v-slot:activator='{ on }')
-              v-btn(icon, v-on='on', color='grey darken-3', href='/login', :aria-label='$t(`common:header.login`)')
+              v-btn(icon, v-on='on', color='grey darken-3', href='/docs/login', :aria-label='$t(`common:header.login`)')
                 v-icon(color='grey') mdi-account-circle
             span {{$t('common:header.login')}}
 
@@ -400,19 +400,19 @@ export default {
       this.newPageModal = true
     },
     pageNewCreate ({ path, locale }) {
-      window.location.assign(`/e/${locale}/${path}`)
+      window.location.assign(`/docs/e/${locale}/${path}`)
     },
     pageView () {
-      window.location.assign(`/${this.locale}/${this.path}`)
+      window.location.assign(`/docs/${this.locale}/${this.path}`)
     },
     pageEdit () {
-      window.location.assign(`/e/${this.locale}/${this.path}`)
+      window.location.assign(`/docs/e/${this.locale}/${this.path}`)
     },
     pageHistory () {
-      window.location.assign(`/h/${this.locale}/${this.path}`)
+      window.location.assign(`/docs/h/${this.locale}/${this.path}`)
     },
     pageSource () {
-      window.location.assign(`/s/${this.locale}/${this.path}`)
+      window.location.assign(`/docs/s/${this.locale}/${this.path}`)
     },
     pageDuplicate () {
       const pathParts = this.path.split('/')
@@ -423,7 +423,7 @@ export default {
       }
     },
     pageDuplicateHandle ({ locale, path }) {
-      window.location.assign(`/e/${locale}/${path}?from=${this.$store.get('page/id')}`)
+      window.location.assign(`/docs/e/${locale}/${path}?from=${this.$store.get('page/id')}`)
     },
     pageConvert () {
       this.convertPageModal = true
@@ -443,7 +443,7 @@ export default {
           }
         })
         if (_.get(resp, 'data.pages.move.responseResult.succeeded', false)) {
-          window.location.replace(`/${locale}/${path}`)
+          window.location.replace(`/docs/${locale}/${path}`)
         } else {
           throw new Error(_.get(resp, 'data.pages.move.responseResult.message', this.$t('common:error.unexpected')))
         }
@@ -456,7 +456,7 @@ export default {
       this.deletePageModal = true
     },
     assets () {
-      // window.location.assign(`/f`)
+      // window.location.assign(`/docs/f`)
       this.$store.commit('showNotification', {
         style: 'indigo',
         message: `Coming soon...`,
@@ -468,15 +468,15 @@ export default {
       switch (this.mode) {
         case 'view':
         case 'history':
-          window.location.assign(`/${locale.code}/${this.path}`)
+          window.location.assign(`/docs/${locale.code}/${this.path}`)
           break
       }
     },
     logout () {
-      window.location.assign('/logout')
+      window.location.assign('/docs/logout')
     },
     goHome () {
-      window.location.assign('/')
+      window.location.assign('/docs/')
     }
   }
 }

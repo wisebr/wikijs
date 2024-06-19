@@ -38,11 +38,11 @@ router.get('/login', async (req, res, next) => {
       const stg = await WIKI.models.authentication.query().orderBy('order').first()
       const stgInfo = _.find(WIKI.data.authentication, ['key', stg.strategyKey])
       if (!stgInfo.useForm) {
-        return res.redirect(`/login/${stg.key}`)
+        return res.redirect(`/docs/login/${stg.key}`)
       }
     }
     // -> Show Login
-    const bgUrl = !_.isEmpty(WIKI.config.auth.loginBgUrl) ? WIKI.config.auth.loginBgUrl : '/_assets/img/splash/1.jpg'
+    const bgUrl = !_.isEmpty(WIKI.config.auth.loginBgUrl) ? WIKI.config.auth.loginBgUrl : '/docs/_assets/img/splash/1.jpg'
     res.render('login', { bgUrl, hideLocal: WIKI.config.auth.hideLocal })
   }
 })
@@ -73,16 +73,16 @@ router.all('/login/:strategy/callback', async (req, res, next) => {
     res.cookie('jwt', authResult.jwt, { expires: moment().add(1, 'y').toDate() })
 
     const loginRedirect = req.cookies['loginRedirect']
-    if (loginRedirect === '/' && authResult.redirect) {
+    if (loginRedirect === '/docs/' && authResult.redirect) {
       res.clearCookie('loginRedirect')
-      res.redirect(authResult.redirect)
+      res.redirect('/docs' + authResult.redirect)
     } else if (loginRedirect) {
       res.clearCookie('loginRedirect')
-      res.redirect(loginRedirect)
+      res.redirect('/docs' + loginRedirect)
     } else if (authResult.redirect) {
-      res.redirect(authResult.redirect)
+      res.redirect('/docs' + authResult.redirect)
     } else {
-      res.redirect('/')
+      res.redirect('/docs/')
     }
   } catch (err) {
     next(err)
@@ -104,7 +104,7 @@ router.post('/login', bruteforce.prevent, async (req, res, next) => {
       }, { req, res })
       req.brute.reset()
       res.cookie('jwt', authResult.jwt, { expires: moment().add(1, 'y').toDate() })
-      res.redirect('/')
+      res.redirect('/docs/')
     } catch (err) {
       const { formStrategies, socialStrategies } = await WIKI.models.authentication.getStrategiesForLegacyClient()
       res.render('legacy/login', {
@@ -114,7 +114,7 @@ router.post('/login', bruteforce.prevent, async (req, res, next) => {
       })
     }
   } else {
-    res.redirect('/login')
+    res.redirect('/docs/login')
   }
 })
 
@@ -125,7 +125,7 @@ router.get('/logout', async (req, res) => {
   const redirURL = await WIKI.models.users.logout({ req, res })
   req.logout()
   res.clearCookie('jwt')
-  res.redirect(redirURL)
+  res.redirect('/docs' + redirURL)
 })
 
 /**
@@ -150,11 +150,11 @@ router.get('/verify/:token', bruteforce.prevent, async (req, res, next) => {
     await WIKI.models.users.query().patch({ isVerified: true }).where('id', usr.id)
     req.brute.reset()
     if (WIKI.config.auth.enforce2FA) {
-      res.redirect('/login')
+      res.redirect('/docs/login')
     } else {
       const result = await WIKI.models.users.refreshToken(usr)
       res.cookie('jwt', result.token, { expires: moment().add(1, 'years').toDate() })
-      res.redirect('/')
+      res.redirect('/docs/')
     }
   } catch (err) {
     next(err)
@@ -176,7 +176,7 @@ router.get('/login-reset/:token', bruteforce.prevent, async (req, res, next) => 
       userId: usr.id,
       kind: 'changePwd'
     })
-    const bgUrl = !_.isEmpty(WIKI.config.auth.loginBgUrl) ? WIKI.config.auth.loginBgUrl : '/_assets/img/splash/1.jpg'
+    const bgUrl = !_.isEmpty(WIKI.config.auth.loginBgUrl) ? WIKI.config.auth.loginBgUrl : '/docs/_assets/img/splash/1.jpg'
     res.render('login', { bgUrl, hideLocal: WIKI.config.auth.hideLocal, changePwdContinuationToken })
   } catch (err) {
     next(err)

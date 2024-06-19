@@ -35,7 +35,7 @@ module.exports = {
   },
   output: {
     path: path.join(process.cwd(), 'assets'),
-    publicPath: '/_assets/',
+    publicPath: '/docs/_assets/',
     filename: `js/[name].js?${now}`,
     chunkFilename: `js/[name].js?${now}`,
     globalObject: 'this',
@@ -243,7 +243,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.CURRENT_THEME': JSON.stringify(_.defaultTo(yargs.theme, 'default'))
+      'process.env.CURRENT_THEME': JSON.stringify(_.defaultTo(yargs.theme, 'default')),
+      'process.env.BASE_URL': JSON.stringify(_.defaultTo(yargs.baseURL, '')),
     }),
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 50000

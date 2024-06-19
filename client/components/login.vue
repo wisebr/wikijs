@@ -94,7 +94,7 @@
                 color='indigo darken-2'
                 text
                 rounded
-                href='/register'
+                href='/docs/register'
                 ): .caption {{ $t('auth:switchToRegister.link') }}
         //-------------------------------------------------
         //- FORGOT PASSWORD FORM
@@ -333,7 +333,7 @@ export default {
       this.screen = 'login'
       if (!this.selectedStrategy.strategy.useForm) {
         this.isLoading = true
-        window.location.assign('/login/' + newValue)
+        window.location.assign('/docs/login/' + newValue)
       } else {
         this.$nextTick(() => {
           this.$refs.iptEmail.focus()
@@ -644,16 +644,17 @@ export default {
         Cookies.set('jwt', respObj.jwt, { expires: 365 })
         _.delay(() => {
           const loginRedirect = Cookies.get('loginRedirect')
-          if (loginRedirect === '/' && respObj.redirect) {
+          console.log('loginRedirect:', loginRedirect)
+          if ((loginRedirect === '/') && respObj.redirect) {
             Cookies.remove('loginRedirect')
-            window.location.replace(respObj.redirect)
+            window.location.replace('/docs' + respObj.redirect)
           } else if (loginRedirect) {
             Cookies.remove('loginRedirect')
-            window.location.replace(loginRedirect)
+            window.location.replace('/docs' + loginRedirect)
           } else if (respObj.redirect) {
-            window.location.replace(respObj.redirect)
+            window.location.replace('/docs' + respObj.redirect)
           } else {
-            window.location.replace('/')
+            window.location.replace('/docs/')
           }
         }, 1000)
       }
@@ -692,7 +693,7 @@ export default {
 
 <style lang="scss">
   .login {
-    // background-image: url('/_assets/img/splash/1.jpg');
+    // background-image: url('/docs/_assets/img/splash/1.jpg');
     background-color: mc('grey', '900');
     background-size: cover;
     background-position: center center;

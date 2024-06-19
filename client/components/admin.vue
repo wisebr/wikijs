@@ -106,7 +106,7 @@
 
               v-list-item(to='/dev-flags', color='primary')
                 v-list-item-title {{ $t('admin:dev.flags.title') }}
-              v-list-item(href='/graphql', color='primary')
+              v-list-item(href='/docs/graphql', color='primary')
                 v-list-item-title GraphQL
               //- v-list-item(to='/dev-graphiql')
               //-   v-list-item-title {{ $t('admin:dev.graphiql.title') }}
@@ -141,7 +141,7 @@ WIKI.$store.registerModule('admin', adminStore)
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/a',
+  base: '/docs/a',
   routes: [
     { path: '/', redirect: '/dashboard' },
     { path: '/dashboard', component: () => import(/* webpackChunkName: "admin" */ './admin/admin-dashboard.vue') },

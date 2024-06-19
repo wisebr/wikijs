@@ -42,7 +42,7 @@
             )
             template(slot='item', slot-scope='props')
               v-icon(v-if='props.item.path === "/"', small, @click='goHome') mdi-home
-              v-btn.ma-0(v-else, :href='props.item.path', small, text) {{props.item.name}}
+              v-btn.ma-0(v-else, :href='`/docs` + props.item.path', small, text) {{props.item.name}}
           template(v-if='!isPublished')
             v-spacer
             .caption.red--text {{$t('common:page.unpublished')}}
@@ -113,7 +113,7 @@
                   label
                   :color='$vuetify.theme.dark ? `teal darken-1` : `teal lighten-5`'
                   v-for='(tag, idx) in tags'
-                  :href='`/t/` + tag.tag'
+                  :href='`/docs/t/` + tag.tag'
                   :key='`tag-` + tag.tag'
                   )
                   v-icon(:color='$vuetify.theme.dark ? `teal lighten-3` : `teal`', left, small) mdi-tag
@@ -121,7 +121,7 @@
                 v-chip.mr-1.mb-1(
                   label
                   :color='$vuetify.theme.dark ? `teal darken-1` : `teal lighten-5`'
-                  :href='`/t/` + tags.map(t => t.tag).join(`/`)'
+                  :href='`/docs/t/` + tags.map(t => t.tag).join(`/`)'
                   :aria-label='$t(`common:page.tagsMatching`)'
                   )
                   v-icon(:color='$vuetify.theme.dark ? `teal lighten-3` : `teal`', size='20') mdi-tag-multiple
@@ -171,7 +171,7 @@
                     template(v-slot:activator='{ on }')
                       v-btn.btn-animate-edit(
                         icon
-                        :href='"/h/" + locale + "/" + path'
+                        :href='"/docs/h/" + locale + "/" + path'
                         v-on='on'
                         x-small
                         v-if='hasReadHistoryPermission'
@@ -369,7 +369,7 @@ import Vue from 'vue'
 
 Vue.component('Tabset', Tabset)
 
-Prism.plugins.autoloader.languages_path = '/_assets/js/prism/'
+Prism.plugins.autoloader.languages_path = '/docs/_assets/js/prism/'
 Prism.plugins.NormalizeWhitespace.setDefaults({
   'remove-trailing': true,
   'remove-indent': true,
@@ -649,7 +649,7 @@ export default {
   },
   methods: {
     goHome () {
-      window.location.assign('/')
+      window.location.assign('/docs/')
     },
     toggleNavigation () {
       this.navOpen = !this.navOpen
